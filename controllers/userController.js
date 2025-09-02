@@ -82,10 +82,23 @@ const getProfile = async (req, res) => {
 
 
 
+const updateAvailability = async (req, res) => {
+  if (req.user.role !== "driver") {
+    return res.status(403).json({ message: "Only drivers can update availability" });
+  }
+
+  req.user.isAvailable = req.body.isAvailable;
+  await req.user.save();
+
+  res.json({ message: "Availability updated", isAvailable: req.user.isAvailable });
+};
+
+
 
 module.exports = {
   registerUser,
   loginUser,
   getProfile,
+  updateAvailability,
   
 };
