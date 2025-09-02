@@ -18,11 +18,14 @@
   },
   "homepage": "https://github.com/BayanMukhaimer/SwiftRide-back-end#readme",
   "dependencies": {
+    "bcryptjs": "^3.0.2",
     "dotenv": "^17.2.1",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
     "method-override": "^3.0.0",
     "mongoose": "^8.18.0",
-    "morgan": "^1.10.1"
+    "morgan": "^1.10.1",
+    "socket.io": "^4.8.1"
   }
 }
