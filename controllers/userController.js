@@ -94,11 +94,19 @@ const updateAvailability = async (req, res) => {
 };
 
 
+const updateLocation = async (req, res) => {
+  const { lat, lng } = req.body;
+
+  req.user.location = { lat, lng };
+  await req.user.save();
+
+  res.json({ message: "Location updated", location: req.user.location });
+};
 
 module.exports = {
   registerUser,
   loginUser,
   getProfile,
   updateAvailability,
-  
+  updateLocation,
 };
