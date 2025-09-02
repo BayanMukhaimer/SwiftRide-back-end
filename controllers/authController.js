@@ -47,4 +47,34 @@ const register = async (req, res) => {
 
 
 
-module.exports = { register };
+const login = async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    return res.status(401).json({ message: "Invalid email or password" });
+  }
+
+
+  const isMatch = await user.matchPassword(password);
+  if (!isMatch) {
+    return res.status(401).json({ message: "Invalid email or password" });
+  }
+
+  res.json({
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    vehicle: user.role === "driver" ? user.vehicle : undefined,
+    token: generateToken(user._id),
+  });
+};
+
+
+const getMe = async (req, res) => {
+  res.json(req.user);
+};
+
+module.exports = { register, login, getMe };
