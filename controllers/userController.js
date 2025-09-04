@@ -16,7 +16,7 @@ const registerUser = async (req, res) => {
     
     const vehicleData = role === "driver" ? vehicle : null;
 
-    const userExists = await User.findOne({ name });
+    const userExists = await User.findOne({ email });
     if (userExists) {
       return res.status(400).json({ message: "User already exists" });
     }
@@ -46,9 +46,9 @@ const registerUser = async (req, res) => {
  
 
 const loginUser = async (req, res) => {
-  const { name, password } = req.body;
+  const { email, password } = req.body;
 
-  const user = await User.findOne({ name });
+  const user = await User.findOne({ email });
 
   if (user && (await user.matchPassword(password))) {
     res.json({
