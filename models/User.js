@@ -6,25 +6,24 @@ const userSchema = new Schema({
     name: String,
     email: String,
     password: String,
+    phone: Number,
     role: {
         type: String,
         enum: ["rider", "driver"]
     },
-
-    phone: String,
     vehicle: {
         type: String
     },
 
-    location: {
-        lat: Number,
-        lng: Number
-    },
+    // location: {
+    //     lat: Number,
+    //     lng: Number
+    // },
 
-    isAvailable: {
-        type: Boolean,
-        default: false
-    }
+    // isAvailable: {
+    //     type: Boolean,
+    //     default: false
+    // }
 
 })
 

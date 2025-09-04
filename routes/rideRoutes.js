@@ -8,12 +8,12 @@ const {
   cancelRide,
 } = require("../controllers/rideController");
 const { protect } = require("../middleware/authMiddleware");
+router.get("/myrides", protect, getMyRides);
 
 // Rider requests a ride
 router.post("/request", protect, requestRide);
 
 // Rider or driver can see their rides
-router.get("/myrides", protect, getMyRides);
 
 // Driver actions
 router.put("/:id/accept", protect, acceptRide);

@@ -6,7 +6,7 @@ const http = require("http");
 const { Server } = require("socket.io");
 const connectToDB = require("./config/db");
 
-
+const cors = require("cors")
 
 
 const app = express();
@@ -22,7 +22,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json()); 
 app.use(methodOverride("_method")); 
 app.use(morgan("dev"));
-
+app.use(cors())
 
 
 connectToDB();

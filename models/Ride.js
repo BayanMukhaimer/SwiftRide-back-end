@@ -32,14 +32,14 @@ const rideSchema = new Schema(
       type: Number,
       default: 0,
     },
-    startedAt: {
-      type: Date,
-      default: null,
-    },
-    completedAt: {
-      type: Date,
-      default: null,
-    },
+    // startedAt: {
+    //   type: Date,
+    //   default: null,
+    // },
+    // completedAt: {
+    //   type: Date,
+    //   default: null,
+    // },
   },
   { timestamps: true } 
 );

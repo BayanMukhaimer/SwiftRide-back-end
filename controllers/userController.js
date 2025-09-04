@@ -16,7 +16,7 @@ const registerUser = async (req, res) => {
     
     const vehicleData = role === "driver" ? vehicle : null;
 
-    const userExists = await User.findOne({ email });
+    const userExists = await User.findOne({ name });
     if (userExists) {
       return res.status(400).json({ message: "User already exists" });
     }
@@ -46,9 +46,9 @@ const registerUser = async (req, res) => {
  
 
 const loginUser = async (req, res) => {
-  const { email, password } = req.body;
+  const { name, password } = req.body;
 
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ name });
 
   if (user && (await user.matchPassword(password))) {
     res.json({
@@ -60,7 +60,7 @@ const loginUser = async (req, res) => {
       token: generateToken(user._id),
     });
   } else {
-    res.status(401).json({ message: "Invalid email or password" });
+    res.status(401).json({ message: "Invalid name or password" });
   }
 };
 
