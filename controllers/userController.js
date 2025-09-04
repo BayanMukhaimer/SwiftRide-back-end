@@ -44,7 +44,7 @@ const registerUser = async (req, res) => {
 };
 
  
-
+// changing it to email
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
 

@@ -48,9 +48,9 @@ const register = async (req, res) => {
 
 
 const login = async (req, res) => {
-  const { name, password } = req.body;
+  const { email, password } = req.body;
 
-  const user = await User.findOne({ name });
+  const user = await User.findOne({ email });
 
   if (!user) {
     return res.status(401).json({ message: "Invalid name or password" });
