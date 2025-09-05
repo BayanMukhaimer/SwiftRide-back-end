@@ -87,6 +87,13 @@ const cancelRide = async (req, res) => {
     return res.status(404).json({ message: "Ride not found" });
   }
 
+  console.log("Cancel attempt:", {
+    rideId: ride._id.toString(),
+    status: ride.status,
+    rider: ride.rider?.toString(),
+    requester: req.user?._id?.toString(),
+  });
+
   if (ride.rider.toString() !== req.user._id.toString()) {
     return res.status(403).json({ message: "You can only cancel your own rides" });
   }
