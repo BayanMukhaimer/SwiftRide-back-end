@@ -17,7 +17,14 @@ const requestRide = async (req, res) => {
     createdAt: new Date(),
   });
 
-  res.status(201).json(ride);
+  const populated = await ride.populate("rider", "name email");
+
+  
+  const io = req.app.get("io");
+  io.emit("newRide", populated);
+  console.log("EMIT newRide ->", populated._id.toString(), populated.status);
+
+  res.status(201).json(populated);
 };
 
 
@@ -36,6 +43,11 @@ const getMyRides = async (req, res) => {
 
 
 const acceptRide = async (req, res) => {
+  console.log("acceptRide user:", {
+    id: req.user?._id?.toString(),
+    role: req.user?.role,
+    email: req.user?.email,
+  });
   if (req.user.role !== "driver") {
     return res.status(403).json({ message: "Only drivers can accept rides" });
   }
@@ -57,6 +69,24 @@ const acceptRide = async (req, res) => {
   res.json({ message: "Ride accepted", ride });
 };
 
+const startRide = async (req, res) => {
+  if (req.user.role !== "driver") {
+    return res.status(403).json({ message: "Only drivers can start rides" });
+  }
+
+  const ride = await Ride.findById(req.params.id);
+  if (!ride) return res.status(404).json({ message: "Ride not found" });
+
+  if (ride.status !== "accepted") {
+    return res.status(400).json({ message: "Only accepted rides can be started" });
+  }
+
+  ride.status = "in-progress";
+  ride.startedAt = new Date();
+  await ride.save();
+
+  res.json({ message: "Ride started", ride });
+};
 
 const completeRide = async (req, res) => {
   if (req.user.role !== "driver") {
@@ -112,6 +142,7 @@ module.exports = {
   requestRide,
   getMyRides,
   acceptRide,
+  startRide,
   completeRide,
   cancelRide,
 };
