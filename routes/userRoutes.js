@@ -14,6 +14,6 @@ router.post("/login", loginUser);
 
 
 router.get("/profile", protect, getProfile);
-router.put("/location", protect, updateLocation); // update live location
+router.put("/location", protect, updateLocation);
 
 module.exports = router;
