@@ -2,30 +2,60 @@ const Ride = require("../models/Ride");
 const User = require("../models/User");
 
 
-const requestRide = async (req, res) => {
-  if (req.user.role !== "rider") {
-    return res.status(403).json({ message: "Only riders can request rides" });
-  }
-
-  const { pickup, dropoff } = req.body;
-
-  const ride = await Ride.create({
-    rider: req.user._id,
-    pickup,
-    dropoff,
-    status: "requested",
-    createdAt: new Date(),
-  });
-
-  const populated = await ride.populate("rider", "name email");
-
-  
-  const io = req.app.get("io");
-  io.emit("newRide", populated);
-  console.log("EMIT newRide ->", populated._id.toString(), populated.status);
-
-  res.status(201).json(populated);
+const PRICING = {
+  "4-seater": { base: 2, perKm: 0.5, perMin: 0.2 },
+  "6-seater": { base: 3, perKm: 0.8, perMin: 0.3 },
 };
+
+const requestRide = async (req, res) => {
+  try {
+    if (req.user.role !== "rider") {
+      return res.status(403).json({ message: "Only riders can request rides" });
+    }
+
+    const { pickup, dropoff, distanceKm, durationMin, vehicle } = req.body;
+
+    if (!pickup || !dropoff || !vehicle) {
+      return res
+        .status(400)
+        .json({ message: "Pickup, dropoff, and vehicle type are required" });
+    }
+
+    if (!PRICING[vehicle]) {
+      return res.status(400).json({ message: "Invalid vehicle type" });
+    }
+
+
+    const rates = PRICING[vehicle];
+    const fare =
+      rates.base +
+      (Number(distanceKm) || 0) * rates.perKm +
+      (Number(durationMin) || 0) * rates.perMin;
+
+    const ride = await Ride.create({
+      rider: req.user._id,
+      pickup,
+      dropoff,
+      vehicle,
+      distanceKm,
+      durationMin,
+      fare,
+      status: "requested",
+    });
+
+    const populated = await ride.populate("rider", "name email");
+
+
+    const io = req.app.get("io");
+    io.emit("newRide", populated);
+
+    res.status(201).json(populated);
+  } catch (error) {
+    console.error("Error creating ride:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 
 
 const getMyRides = async (req, res) => {
