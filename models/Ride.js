@@ -28,10 +28,9 @@ const rideSchema = new Schema(
       enum: ["requested", "accepted", "in-progress", "completed", "cancelled"],
       default: "requested",
     },
-    fare: {
-      type: Number,
-      default: 0,
-    },
+    distanceKm: Number,
+    durationMin: Number,
+    fare: Number,
     startedAt: {
       type: Date,
       default: null,
@@ -45,7 +44,7 @@ const rideSchema = new Schema(
       enum: ["4 seats", "6 seats"]
     }
   },
-  { timestamps: true } 
+  { timestamps: true }
 );
 
 const Ride = model("Ride", rideSchema);

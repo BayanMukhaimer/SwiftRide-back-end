@@ -7,12 +7,23 @@ const requestRide = async (req, res) => {
     return res.status(403).json({ message: "Only riders can request rides" });
   }
 
-  const { pickup, dropoff } = req.body;
+  const { pickup, dropoff, distanceKm, durationMin } = req.body;
+
+  const baseFare = 2;
+  const perKmRate = 0.5;
+  const perMinuteRate = 0.2;
+
+  const fare =
+    baseFare + distanceKm * perKmRate + durationMin * perMinuteRate;
+
 
   const ride = await Ride.create({
     rider: req.user._id,
     pickup,
     dropoff,
+    distanceKm,
+    durationMin,
+    fare,
     status: "requested",
     createdAt: new Date(),
   });
