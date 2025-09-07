@@ -143,12 +143,19 @@ const cancelRide = async (req, res) => {
 
 
 const getRideById = async (req, res) => {
-  const ride = await Ride.findById(req.params.id)
-    .populate("rider", "name email")
-    .populate("driver", "name email vehicle");
+  try {
+    const ride = await Ride.findById(req.params.id)
+      .populate("rider", "name email")
+      .populate("driver", "name email vehicle");
 
-  if (!ride) return res.status(404).json({ message: "Ride not found" });
-  res.json(ride);
+    if (!ride) {
+      return res.status(404).json({ message: "Ride not found" });
+    }
+
+    res.json(ride);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 module.exports = {

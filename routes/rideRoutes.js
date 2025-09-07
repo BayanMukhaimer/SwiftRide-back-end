@@ -7,6 +7,7 @@ const {
   startRide,
   completeRide,
   cancelRide,
+  getRideById,
 } = require("../controllers/rideController");
 const { protect } = require("../middleware/authMiddleware");
 router.get("/myrides", protect, getMyRides);
@@ -15,7 +16,7 @@ router.get("/myrides", protect, getMyRides);
 router.post("/request", protect, requestRide);
 
 // Rider or driver can see their rides
-
+router.get("/:id", protect, getRideById);
 // Driver actions
 router.put("/:id/accept", protect, acceptRide);
 router.put("/:id/start", protect, startRide);
