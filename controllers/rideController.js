@@ -48,7 +48,10 @@ const acceptRide = async (req, res) => {
     role: req.user?.role,
     email: req.user?.email,
   });
-  if (req.user.role !== "driver") {
+  const foundUser = await User.findById(req.user.id)
+
+  console.log(foundUser)
+  if (foundUser.role !== "driver") {
     return res.status(403).json({ message: "Only drivers can accept rides" });
   }
 
