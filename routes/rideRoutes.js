@@ -4,6 +4,7 @@ const {
   requestRide,
   getMyRides,
   acceptRide,
+  startRide,
   completeRide,
   cancelRide,
 } = require("../controllers/rideController");
@@ -17,6 +18,7 @@ router.post("/request", protect, requestRide);
 
 // Driver actions
 router.put("/:id/accept", protect, acceptRide);
+router.put("/:id/start", protect, startRide);
 router.put("/:id/complete", protect, completeRide);
 
 // Rider cancels ride

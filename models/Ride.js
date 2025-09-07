@@ -32,14 +32,18 @@ const rideSchema = new Schema(
       type: Number,
       default: 0,
     },
-    // startedAt: {
-    //   type: Date,
-    //   default: null,
-    // },
-    // completedAt: {
-    //   type: Date,
-    //   default: null,
-    // },
+    startedAt: {
+      type: Date,
+      default: null,
+    },
+    completedAt: {
+      type: Date,
+      default: null,
+    },
+    vehicle: {
+      type: String,
+      enum: ["4 seats", "6 seats"]
+    }
   },
   { timestamps: true } 
 );

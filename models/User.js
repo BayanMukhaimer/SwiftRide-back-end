@@ -20,10 +20,10 @@ const userSchema = new Schema({
     //     lng: Number
     // },
 
-    // isAvailable: {
-    //     type: Boolean,
-    //     default: false
-    // }
+    isAvailable: {
+        type: Boolean,
+        default: true
+    }
 
 })
 

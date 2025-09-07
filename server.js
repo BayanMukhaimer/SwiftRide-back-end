@@ -33,6 +33,7 @@ const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const rideRoutes = require("./routes/rideRoutes");
 
+app.set("io", io);
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/rides", rideRoutes);
@@ -49,18 +50,18 @@ io.on("connection", (socket) => {
   
   socket.on("register", ({ userId, role }) => {
     if (role === "rider") riders[userId] = socket.id;
-    if (role === "driver") drivers[userId] = { socketId: socket.id, isAvailable: false };
+    if (role === "driver") drivers[userId] = { socketId: socket.id, isAvailable: true };
     console.log(`${role} registered: ${userId}`);
   });
 
   
   
-  socket.on("driverAvailability", ({ driverId, isAvailable }) => {
-    if (drivers[driverId]) {
-      drivers[driverId].isAvailable = isAvailable;
-      console.log(`Driver ${driverId} is now ${isAvailable ? "online" : "offline"}`);
-    }
-  });
+  // socket.on("driverAvailability", ({ driverId, isAvailable }) => {
+  //   if (drivers[driverId]) {
+  //     drivers[driverId].isAvailable = isAvailable;
+  //     console.log(`Driver ${driverId} is now ${isAvailable ? "online" : "offline"}`);
+  //   }
+  // });
 
  
   
