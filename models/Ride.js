@@ -41,7 +41,7 @@ const rideSchema = new Schema(
     },
     vehicle: {
       type: String,
-      enum: ["4 seats", "6 seats"]
+      enum: ["4-seater", "4-seater"]
     }
   },
   { timestamps: true }
