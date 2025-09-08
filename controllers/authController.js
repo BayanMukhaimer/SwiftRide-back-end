@@ -2,8 +2,8 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 
 
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });
+const generateToken = (id, role, email) => {
+  return jwt.sign({ id , role, email}, process.env.JWT_SECRET, { expiresIn: "30d" });
 };
 
 
@@ -36,7 +36,7 @@ const register = async (req, res) => {
       email: user.email,
       role: user.role,
       vehicle: user.vehicle,
-      token: generateToken(user._id),
+      token: generateToken(user._id, user.role, user.email),
     });
   } catch (error) {
     console.error(error); 
@@ -68,7 +68,7 @@ const login = async (req, res) => {
     email: user.email,
     role: user.role,
     vehicle: user.role === "driver" ? user.vehicle : undefined,
-    token: generateToken(user._id),
+    token: generateToken(user._id,user.role, user.email)
   });
 };
 
